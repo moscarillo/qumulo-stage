@@ -1,0 +1,120 @@
+.navigation {
+  background-color: #283038;
+  display: flex;
+  flex-direction: column;
+  width: 12.5em;
+}
+
+.navigation-header {
+  align-items: center;
+  border-bottom: solid 1px #2D3E4E;
+  box-sizing: border-box;
+  display: flex;
+  gap: 0.5em;
+  height: 3.5em;
+  justify-items: center;
+  margin: 0 auto;
+  padding-bottom: 0.5em;
+  padding-top: 1em;
+  width: 11.25em;
+}
+
+.navigation-header-logo {
+  display: flex;
+  height: 1.75em;
+  width: 1.75em;
+}
+
+.navigation-header-name {
+  display: flex;
+  min-width: 0;
+  font-size: 1.3125em;
+  line-height: 2em;
+}
+
+.navigation-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25em;
+  font-size: 0.875em;
+  line-height: 1.5em;
+  padding-top: 1em;
+  width: 11.75;
+  margin-left: 0.75em;
+  --higlight-background-color: #13181E;
+  --higlight-border-right: solid 2px #00A3CA;
+}
+
+.navigation-menu-item {
+  cursor: pointer;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.navigation-menu-item::before {
+  content: '•';
+  padding-right: 0.5em;
+  padding-left: 0.5em;
+}
+
+.navigation-menu-item:hover {
+  background-color: var(--higlight-background-color);
+  border-right: var(--higlight-border-right);
+}
+
+.selected {
+  background-color: var(--higlight-background-color);
+  border-right: var(--higlight-border-right);
+}
+
+.navigation-footer {
+  display: flex;
+  flex: 1 1 0%;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.navigation-user {
+  align-items: center;
+  border-top: solid 1px #2D3E4E;
+  box-sizing: border-box;
+  cursor: pointer;
+  display: flex;
+  height: 3.5em;
+  justify-content: space-between;
+  margin: 0 auto;
+  padding-bottom: 0.5em;
+  padding-top: 1em;
+  width: 11.25em;
+}
+
+.navigation-user-name {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.375em;
+} 
+
+.circle-white{
+  background-color: rgba(243, 244, 244, 1);
+  border-radius: 50%;
+  color: #242C35;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.75em;
+  height: 1.5em;
+  width: 1.5em;
+}
+
+.label-form {
+  font-size: 1.25em;
+}
+
+/* helpers */
+.ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

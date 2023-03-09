@@ -1,0 +1,23 @@
+body {
+  margin: 0;
+  font-family: 'Nunito', serif;
+  font-weight: 300;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+/* padding */
+.pt-3 {
+  padding-top: 1.5rem;
+}
+
+.pt-6 {
+  padding-top: 3rem;
+}
+
+.ptb-1 {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
