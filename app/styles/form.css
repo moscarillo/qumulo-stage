@@ -64,14 +64,17 @@
 .fc-radio-container {
   display: flex;
   flex-direction: row;
+  flex-shrink: 0;
   gap: 0.5em;
 }
 
 .sc-radio-fields-container {
   display: flex;
   flex-direction: row;
+  flex-shrink: 0;
   gap: 1.5em;
 }
+
 .fc-row {
   align-items: center;
   display: flex;
@@ -86,6 +89,7 @@
   color: rgba(199, 202, 204, 1);
   display: flex;
   margin-right: 1.25em;
+  max-width: 60em;
   padding: 0.375em 0.5625em;
 }
 
@@ -151,7 +155,8 @@
   display: flex;
   justify-content: flex-end;
   margin-left: 1.5em;
-  width: 16.875em;
+  max-width: 16.875em;
+  min-width: 11em;
 }
 
 .sc-field {
@@ -192,11 +197,56 @@
   gap: 1.5em;
 }
 
+/* mobile and larger */
+@media only screen and (min-width: 0) {
+  .q-flex-responsive-days {
+    display: flex;
+    flex-direction: column;
+  }
+  .q-flex-responsive {
+    display: flex;
+    flex-direction: column;
+  }
+  .flex-row{
+    display:flex;
+    flex-direction: row;
+    margin-left: 6.5em;
+    margin-top: 0.25em
+  }
+}
+  
+/* tablet and larger */
+@media only screen and (min-width: 1280px) {
+  .q-flex-responsive-days {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1.5em;
+  }
+  .q-flex-responsive {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+  .flex-row{
+    display:flex;
+    flex-direction: row;
+    margin-left: 0;
+    margin-top: 0;
+  }
+}
+
 input[type="checkbox"]{
   cursor: pointer;
   background: #F3F4F4;
   border: 1px solid #007ACC;
   border-radius: 2px !important;
+}
+
+input[type="radio"]{
+  cursor: pointer;
+  background: #F3F4F4;
+  border: 1px solid #007ACC;
 }
 
 label{
