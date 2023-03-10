@@ -19,8 +19,8 @@ export const links: LinksFunction = () => {
 export default function Index() {
   return (
     <div className="app-container">
-      <Navigation content="edit-snapshot-policy" />
-      <Main content="edit-snapshot-policy" />
+    <Navigation content="performance-metrics" />
+      <Main content="performance-metrics" />
     </div>
   );
 }

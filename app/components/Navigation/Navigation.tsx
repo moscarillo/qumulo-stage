@@ -1,6 +1,13 @@
 import React from 'react';
+import { Link } from "@remix-run/react";
+import { capitalize } from '~/utils/strings';
 
-function Navigation() {
+type Props = {
+  content: 'edit-snapshot-policy' | 'performance-metrics'
+}
+
+function Navigation(props: Props) {
+  const { content } = props;
   return (
     <div className="navigation">
       <div className="navigation-header">
@@ -29,11 +36,11 @@ function Navigation() {
         </div>
       </div>
       <div className="navigation-menu">
-        <div className="navigation-menu-item" title="Performance Metrics">
-          Performance Metrics
+        <div className={`${content === 'performance-metrics' && 'selected'} navigation-menu-item`} title="Performance Metrics">
+          <Link className="no-decoration" to="/performance-metrics">Performance Metrics</Link>
         </div>
-        <div className="navigation-menu-item selected" title="Edit Snapshot Policy">
-          Edit Snapshot Policy
+        <div className={`${content === 'edit-snapshot-policy' && 'selected'} navigation-menu-item`} title="Edit Snapshot Policy">
+          <Link className="no-decoration" to="/edit-snapshot-policy">Edit Snapshot Policy</Link>
         </div>
       </div>
       <div className="navigation-footer">
