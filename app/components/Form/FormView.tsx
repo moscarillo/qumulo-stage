@@ -228,7 +228,7 @@ function FormView(props: Props) {
       </div>
       <div className="fc-button-row pt-3">
         <Button className="rounded-1">Create Policy</Button>
-        <a className="link" href="">
+        <a className="link" href="/">
           Cancel
         </a>
       </div>
