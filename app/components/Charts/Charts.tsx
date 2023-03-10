@@ -52,7 +52,6 @@ function Charts() {
               dataKey="datetime"
               tickFormatter={(value: any, index): string => {
                 const timeArr = value.split(' ');
-                const time = timeArr[timeArr.length - 1];
                 const displayTime = timeArr.slice(0, -1).join(' ').replace(/,/,'');
                 return displayTime;
               }}
@@ -147,7 +146,14 @@ function Charts() {
             }}
           >
             <CartesianGrid stroke="rgba(100, 107, 114, 1)" vertical={false} />
-            <XAxis dataKey="datetime" />
+            <XAxis
+              dataKey="datetime"
+              tickFormatter={(value: any, index): string => {
+                const timeArr = value.split(' ');
+                const displayTime = timeArr.slice(0, -1).join(' ').replace(/,/,'');
+                return displayTime;
+              }}
+            />
             <YAxis
               axisLine={false}
               tickFormatter={(value) => {

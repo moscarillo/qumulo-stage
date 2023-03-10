@@ -18,6 +18,7 @@ export const meta: MetaFunction = () => ({
   charset: 'utf-8',
   title: 'Qumulo Test',
   viewport: 'width=device-width,initial-scale=1',
+  description: 'staging site for qumulo hw'
 });
 
 export default function App() {

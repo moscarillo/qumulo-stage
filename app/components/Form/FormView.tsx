@@ -76,6 +76,7 @@ function FormView(props: Props) {
       <div className="input-directory">
         <div className="directory-icon">/</div>
         <input
+          aria-label="Source File Path"
           className="fc-input-directory"
           name="source_file_path"
           defaultValue={currentPolicy.source_file_path}
@@ -106,10 +107,9 @@ function FormView(props: Props) {
         <div className="sc-row">
           <div className="sc-field-label">Take a Snapshot at</div>
           <div className="sc-field">
-            <input
-              className="fc-input-sm" min={0} max={23} size={2} type="number" name="hour" defaultValue={currentPolicy.schedule.creation_schedule.hour} />
+            <input aria-label="Schedule Hour" className="fc-input-sm" min={0} max={23} size={2} type="number" name="hour" defaultValue={currentPolicy.schedule.creation_schedule.hour} />
             <div className="form-time-separator">:</div>
-            <input className="fc-input-sm" min={0} max={59} size={2} type="number" name="minute" defaultValue={currentPolicy.schedule.creation_schedule.minute} />
+            <input aria-label="Schedule Minute" className="fc-input-sm" min={0} max={59} size={2} type="number" name="minute" defaultValue={currentPolicy.schedule.creation_schedule.minute} />
           </div>
         </div>
 
@@ -177,10 +177,12 @@ function FormView(props: Props) {
               </div>
               <div className='flex-row'>
               <div className="ptb-1">
-                <input className="fc-input-sm" size={2} type="input" name="snapshot_time_value" />
+                <input className="fc-input-sm" size={2} min={0} max={60} type="number" name="snapshot_time_value" aria-label='Snapshot Time Value'/>
               </div>
               <select className="fc-select" name="snapshot_time_unit">
                 <option>day(s)</option>
+                <option>hours(s)</option>
+                <option>minutes(s)</option>
               </select>
               </div>
               </div>
@@ -207,6 +209,7 @@ function FormView(props: Props) {
         onChange={(e) => handleSnapshotNamePreview(e.target.value)}
         defaultValue={currentPolicy.snapshot_name_template}
         name="snapshot_name_format"
+        aria-label="Snapshot Name Preview Input"
       />
       <div className="fc-field-sub-label">
         <div>To name your snapshot, you can use text strings and the following variables:</div>
