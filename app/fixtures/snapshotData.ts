@@ -1,3 +1,5 @@
+export type SnapshotFrequency = 'SCHEDULE_HOURLY_OR_LESS' | 'SCHEDULE_MONTHLY' | 'SCHEDULE_DAILY_OR_WEEKLY';
+
 export const snapshotData = {
   entries: [
     {

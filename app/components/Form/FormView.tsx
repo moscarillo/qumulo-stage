@@ -1,11 +1,17 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button } from 'react-bootstrap';
 
-import type { SnapshotPolicy, SnapshotPolicyEntry } from './types/policy';
+import { snapshotFrequency } from './constants/fields';
+
+import type { Days, SnapshotPolicy, SnapshotPolicyEntry } from './types/policy';
 
 type Props = {
   data: SnapshotPolicy;
 };
+
+interface IDictionary {
+  [index: string]: string;
+}
 
 const nameFromPreview = (snapshotNamePreview: string, currentPolicy: SnapshotPolicyEntry): string => {
   let previewName = snapshotNamePreview.replace(/{ID}/g, currentPolicy.id.toString());
@@ -16,18 +22,40 @@ const nameFromPreview = (snapshotNamePreview: string, currentPolicy: SnapshotPol
 
 function FormView(props: Props) {
   const { data: snapshotData } = props;
+  const [hasEveryDay, setHasEveryDay] = useState<boolean>(false);
   const [snapshotNamePreview, setSnapshotNamePreview] = useState<string>(nameFromPreview(snapshotData.entries[0].snapshot_name_template, snapshotData.entries[0]));
   const [currentPolicyName, setCurrentPolicyName] = useState<string>(snapshotData.entries[0].policy_name);
   const [currentPolicy, setCurrentPolicy] = useState<SnapshotPolicyEntry>(snapshotData.entries[0]);
 
   const handlePolicyChange = (policyName: string) => {
+    const selectedPolicy = snapshotData.entries.filter(_=>_.policy_name === policyName)[0];
     setCurrentPolicyName(policyName);
-    setCurrentPolicy(snapshotData.entries.filter(_=>_.policy_name === policyName)[0])
-  }
+    setCurrentPolicy(selectedPolicy);
+    setSnapshotNamePreview(nameFromPreview(selectedPolicy.snapshot_name_template, selectedPolicy));  
+  };
 
   const handleSnapshotNamePreview = (snapshotNamePreview: string) => {
     setSnapshotNamePreview(nameFromPreview(snapshotNamePreview, currentPolicy));  
+  };
+
+  const selectAllDayCheckboxes = () => {
+    const dayCheckboxes = document.getElementsByName('on_day');
+    const day = Array.from(dayCheckboxes as unknown as HTMLInputElement[]);
+
+    day.forEach((day: HTMLInputElement) => {
+      day.checked = true
+    });
   }
+
+  const checkboxDayCount = () => {
+    const dayCheckboxes = document.getElementsByName('on_day');
+    const dayCount = Array.from(dayCheckboxes).filter((_:any)=>_.checked).length;
+    setHasEveryDay(dayCount === 7);
+  }
+
+  useEffect(()=>{
+    checkboxDayCount()
+  },[currentPolicy])
 
   return (
     <div className="fc">
@@ -50,7 +78,7 @@ function FormView(props: Props) {
         <input
           className="fc-input-directory"
           name="source_file_path"
-          value={currentPolicy.source_file_path}
+          defaultValue={currentPolicy.source_file_path}
         />
       </div>
       <div className="fc-field-label">Run Policy on the Following Schedule</div>
@@ -58,8 +86,12 @@ function FormView(props: Props) {
         <div className="sc-row">
           <div className="sc-field-label">Select Schedule Type</div>
           <div className="sc-field">
-            <select className="fc-select">
-              <option>Daily or Weekly</option>
+            <select defaultValue={currentPolicy.schedule.creation_schedule.frequency} className="fc-select">
+              {Object.keys(snapshotFrequency).map((frequency:string) => (
+                <option key={frequency} value={frequency}>{
+                  snapshotFrequency[frequency as keyof typeof snapshotFrequency]}
+                </option>
+              ))}
             </select>
           </div>
         </div>
@@ -67,16 +99,17 @@ function FormView(props: Props) {
         <div className="sc-row">
           <div className="sc-field-label">Set to Time Zone</div>
           <div className="sc-field">
-            America/Los Angeles<div className="circle-blue">?</div>
+            {currentPolicy.schedule.creation_schedule.timezone}<div className="circle-blue">?</div>
           </div>
         </div>
 
         <div className="sc-row">
           <div className="sc-field-label">Take a Snapshot at</div>
           <div className="sc-field">
-            <input className="fc-input-sm" min={0} max={23} size={2} type="number" name="hour" />
+            <input
+              className="fc-input-sm" min={0} max={23} size={2} type="number" name="hour" defaultValue={currentPolicy.schedule.creation_schedule.hour} />
             <div className="form-time-separator">:</div>
-            <input className="fc-input-sm" min={0} max={59} size={2} type="number" name="minute" />
+            <input className="fc-input-sm" min={0} max={59} size={2} type="number" name="minute" defaultValue={currentPolicy.schedule.creation_schedule.minute} />
           </div>
         </div>
 
@@ -84,19 +117,25 @@ function FormView(props: Props) {
           <div className="sc-field-label">On the Following Day(s)</div>
           <div className="sc-field gap-wide">
             <div className="form-check fc-checkbox-container">
-              <input className="form-check-input" id="daily" type="checkbox" name="every_day" />
+              <input onChange={() => {
+                selectAllDayCheckboxes();
+                setHasEveryDay(!hasEveryDay);
+              }} checked={hasEveryDay} className="form-check-input" id="daily" type="checkbox" name="every_day" />
               <label className="noBreak" htmlFor="daily">
                 Every day
               </label>
             </div>
             <div className="flex-responsive-days">
-            {['Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat', 'Sun'].map((day) => (
-              <div key="day" className="form-check fc-checkbox-container">
+            {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((day) => (
+              <div key={day} className="form-check fc-checkbox-container">
                 <input
                   className="form-check-input"
                   id={`${day.toLowerCase()}_Id`}
                   type="checkbox"
-                  name={`${day.toLowerCase()}`}
+                  onChange={()=>checkboxDayCount()}
+                  defaultChecked={currentPolicy.schedule.creation_schedule.on_days?.includes(day.toUpperCase() as unknown as Days)}
+                  name="on_day"
+                  value={`${day.toLowerCase()}`}
                 />
                 <label htmlFor={`${day.toLowerCase()}_Id`}>{day}</label>
               </div>
@@ -108,7 +147,7 @@ function FormView(props: Props) {
         <div className="sc-row">
           <div className="sc-field-label">Delete Each Snapshot</div>
           <div className="sc-field">
-            <div className="q-flex-responsive">
+            <div className="flex-responsive">
               <div className="sc-radio-fields-container">
                 <div className="fc-radio-container form-check">
                   <input
@@ -179,6 +218,7 @@ function FormView(props: Props) {
           className="form-check-input"
           id="enable_policy_id"
           type="checkbox"
+          defaultChecked={currentPolicy.enabled}
           name="enable_policy"
         />
         <label className="pt-2" htmlFor="enable_policy_id">Enable policy</label>

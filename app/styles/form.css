@@ -153,6 +153,7 @@
 .sc-field-label {
   align-items: center;
   display: flex;
+  flex: 1 1 0%;
   justify-content: flex-end;
   margin-left: 1.5em;
   max-width: 16.875em;
@@ -163,6 +164,7 @@
   align-items: center;
   display: flex;
   flex: 1 1 0%;
+  min-width: 16.75em;
 }
 
 .circle-blue {
@@ -199,11 +201,11 @@
 
 /* mobile and larger */
 @media only screen and (min-width: 0) {
-  .q-flex-responsive-days {
+  .flex-responsive-days {
     display: flex;
     flex-direction: column;
   }
-  .q-flex-responsive {
+  .flex-responsive {
     display: flex;
     flex-direction: column;
   }
@@ -216,14 +218,14 @@
 }
   
 /* tablet and larger */
-@media only screen and (min-width: 1280px) {
-  .q-flex-responsive-days {
+@media only screen and (min-width: 1075px) {
+  .flex-responsive-days {
     display: flex;
     flex-direction: row;
     align-items: center;
     gap: 1.5em;
   }
-  .q-flex-responsive {
+  .flex-responsive {
     display: flex;
     flex-direction: row;
     align-items: center;
