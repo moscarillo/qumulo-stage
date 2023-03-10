@@ -1,5 +1,5 @@
 
-type ChartData = {
+export type ChartData = {
   datetime: string,
   iops_read: number,
   iops_write: number,
@@ -21,8 +21,10 @@ export const getRandomData = (days = 7) => {
     while (hour < 24) {
       const d = new Date();
       d.setDate(d.getDate() - (day + 1));
+      d.setHours(d.getHours() - (hour + 1));
+      const dt = `${months[d.getMonth()]} ${d.getDate()}, ${d.getHours()}:00`;
       data.push({
-        datetime: `${months[d.getMonth()]} ${d.getDate()}`,
+        datetime: dt,
         iops_read: getRandomInt(100000),
         iops_write: getRandomInt(100000),
         throughput_read: getRandomInt(2000000000),
@@ -32,5 +34,5 @@ export const getRandomData = (days = 7) => {
     }
     day++;
   };
-  return data;
+  return data.reverse();
 }

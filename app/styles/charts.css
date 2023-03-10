@@ -11,6 +11,23 @@
   padding-top: 2.375em;
 }
 
+.charts-select-container {
+  display: flex;
+  flex: 1 1 0%;
+  justify-content: flex-end;
+}
+
+.charts-select {
+  background-color: rgba(66, 75, 83, 0.5);
+  border-radius: 5px;
+  border: solid 1px #424B53;
+  color: rgba(199, 202, 204, 1);
+  display: flex;
+  margin-right: 1.25em;
+  max-width: 60em;
+  padding: 0.375em 0.5625em;
+}
+
 .chart-tooltip-display {
   display: flex;
   max-width: 68vw;
