@@ -6,20 +6,20 @@ import type { LinksFunction } from '@remix-run/node';
 
 import mainStylesheetUrl from '~/styles/main.css';
 import navStylesheetUrl from '~/styles/navigation.css';
-import formStylesheetUrl from '~/styles/form.css';
+import chartsStylesheetUrl from '~/styles/charts.css';
 
 export const links: LinksFunction = () => {
   return [
     { rel: 'stylesheet', href: mainStylesheetUrl },
     { rel: 'stylesheet', href: navStylesheetUrl },
-    { rel: 'stylesheet', href: formStylesheetUrl }
+    { rel: 'stylesheet', href: chartsStylesheetUrl }
   ];
 };
 
 export default function Index() {
   return (
     <div className="app-container">
-    <Navigation content="performance-metrics" />
+      <Navigation content="performance-metrics" />
       <Main content="performance-metrics" />
     </div>
   );

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form } from '~/components/Form';
+import { Charts, Form } from '~/components';
 import { capitalize } from '~/utils/strings';
 
 type Props = {
@@ -12,6 +12,7 @@ function Main(props: Props) {
     <div className="main">
       <div className="main-header">{capitalize(content.replace(/-/ig,' '))}</div>
       {content === 'edit-snapshot-policy' && <Form formType="snapshotPolicy" />}
+      {content === 'performance-metrics' && <Charts />}
     </div>
   );
 }

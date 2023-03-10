@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from "@remix-run/react";
-import { capitalize } from '~/utils/strings';
 
 type Props = {
   content: 'edit-snapshot-policy' | 'performance-metrics'
