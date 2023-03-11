@@ -11,15 +11,32 @@ import {
 } from 'recharts';
 
 import { getRandomData } from '~/fixtures/metricData';
-import type { ChartData } from '~/fixtures/metricData';
 
 function Charts() {
-  const [dataDays, setDataDays] = useState<number>(7);
   const [data, setData] = useState<any[]>(getRandomData(7));
   const [iopsRead, setIopsRead]=useState<number>(0.0)
   const [iopsWrite, setIopsWrite]=useState<number>(0.0)
   const [throughputRead, setThroughputRead]=useState<number>(0.0)
   const [throughputWrite, setThroughputWrite]=useState<number>(0.0)
+
+  const getTicks = () => {
+    if (data) {
+      const length = data.length;
+      const filteredTimeData = data
+        .slice(0, length)
+        .filter((_: any) => {
+          const timeArr = _.datetime.split(' ');
+          let time = timeArr[timeArr.length-1];
+          if (time === '12:00') {
+            return _;
+          }
+        })
+        .map((t: any) => {
+          return t.datetime;
+        });
+      return filteredTimeData;
+    }
+  };
 
   const handleDayChange = (day: string) => {
     setData(getRandomData(Number(day)));
@@ -50,9 +67,10 @@ function Charts() {
             <CartesianGrid stroke="rgba(100, 107, 114, 1)" vertical={false} />
             <XAxis
               dataKey="datetime"
+              ticks={getTicks()}
               tickFormatter={(value: any, index): string => {
-                const timeArr = value.split(' ');
-                const displayTime = timeArr.slice(0, -1).join(' ').replace(/,/,'');
+                const timeArr = value?.split(' ');
+                const displayTime = timeArr?.slice(0, -1).join(' ').replace(/,/,'');
                 return displayTime;
               }}
             />
@@ -65,7 +83,7 @@ function Charts() {
             <Line dot={false} type="monotone" dataKey="iops_read" stroke="rgba(149, 95, 213, 1)" fill="rgba(149, 95, 213, 1)" isAnimationActive={true} />
             <Line dot={false} type="monotone" dataKey="iops_write" stroke="rgba(0, 163, 202, 1)" fill="rgba(0, 163, 202, 1)" isAnimationActive={true} />
             <Tooltip
-              position={{ x: 'auto' as any, y: -44 }}
+              position={{ x: 'auto' as any, y: -38 }}
               wrapperStyle={{
                 outline: 'none',
               }}
@@ -76,35 +94,12 @@ function Charts() {
                 if (label === 'iops_read') {
                   setIopsRead(value);
                 }
-
                 return [];
               }}
               labelFormatter={(label, payload) => {
                 const display = (
-                  <span
-                    style={{
-                      display: 'block',
-                      fontSize: '1.1rem',
-                      lineHeight: '24px',
-                    }}
-                  >
-                    <span
-                      style={{
-                        display: 'block',
-                        color: '#ccc',
-                        paddingBottom: '8px',
-                        textAlign: 'center',
-                        textTransform: 'capitalize',
-                      }}
-                    >
-                      <span
-                        style={{
-                          color: '#fff',
-                          fontSize: '1.2rem',
-                        }}
-                      >{label}
-                      </span>
-                    </span>
+                  <span style={{color: '#fff', fontSize: '1.2rem'}}>
+                    {label}
                   </span>
                 );
                 return display;
@@ -124,11 +119,11 @@ function Charts() {
           <div>IOPS</div>
           <div className="tooltip-read-write">
             READ
-            <div className="iops-read">{iopsRead} IOPS</div>
+            <div className="iops-read">{(iopsRead/1000).toFixed(2)}k IOPS</div>
           </div>
           <div className="tooltip-read-write">
             Write
-            <div className="iops-write">{iopsWrite} IOPS</div>
+            <div className="iops-write">{(iopsWrite/1000).toFixed(2)}k IOPS</div>
           </div>
         </div>
       </div>
@@ -148,9 +143,10 @@ function Charts() {
             <CartesianGrid stroke="rgba(100, 107, 114, 1)" vertical={false} />
             <XAxis
               dataKey="datetime"
+              ticks={getTicks()}
               tickFormatter={(value: any, index): string => {
-                const timeArr = value.split(' ');
-                const displayTime = timeArr.slice(0, -1).join(' ').replace(/,/,'');
+                const timeArr = value?.split(' ');
+                const displayTime = timeArr?.slice(0, -1).join(' ').replace(/,/,'');
                 return displayTime;
               }}
             />
@@ -168,7 +164,7 @@ function Charts() {
             <Brush fill="rgba(0,0,0,0.2)" />
             <Tooltip
               //unfortunate number type only available
-              position={{ x: 'auto' as any, y: -44 }}
+              position={{ x: 'auto' as any, y: -38 }}
               wrapperStyle={{
                 outline: 'none',
               }}
@@ -179,35 +175,12 @@ function Charts() {
                 if (label === 'throughput_read') {
                   setThroughputRead(value);
                 }
-
                 return [];
               }}
               labelFormatter={(label, payload) => {
                 const display = (
-                  <span
-                    style={{
-                      display: 'block',
-                      fontSize: '1.1rem',
-                      lineHeight: '24px',
-                    }}
-                  >
-                    <span
-                      style={{
-                        display: 'block',
-                        color: '#ccc',
-                        paddingBottom: '8px',
-                        textAlign: 'center',
-                        textTransform: 'capitalize',
-                      }}
-                    >
-                      <span
-                        style={{
-                          color: '#fff',
-                          fontSize: '1.2rem',
-                        }}
-                      >{label}
-                      </span>
-                    </span>
+                  <span style={{color: '#fff', fontSize: '1.2rem'}}>
+                    {label}
                   </span>
                 );
                 return display;
@@ -227,11 +200,11 @@ function Charts() {
           <div>Throughput</div>
           <div className="tooltip-read-write">
             READ
-            <div className="throughput-read">{throughputRead} KB/s</div>
+            <div className="throughput-read">{(throughputRead/1000000).toFixed(2)} MB/s</div>
           </div>
           <div className="tooltip-read-write">
             Write
-            <div className="throughput-write">{throughputWrite} KB/s</div>
+            <div className="throughput-write">{(throughputWrite/1000000).toFixed(2)} MB/s</div>
           </div>
         </div>
       </div>

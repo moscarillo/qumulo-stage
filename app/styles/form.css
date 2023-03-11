@@ -218,7 +218,7 @@
 }
   
 /* tablet and larger */
-@media only screen and (min-width: 1075px) {
+@media only screen and (min-width: 1170px) {
   .flex-responsive-days {
     display: flex;
     flex-direction: row;
